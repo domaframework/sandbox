@@ -30,14 +30,6 @@ subprojects {
     apply(plugin = "de.marcphilipp.nexus-publish")
 
     tasks {
-        named<JavaCompile>("compileJava") {
-            options.encoding = encoding
-        }
-
-        named<JavaCompile>("compileTestJava") {
-            options.encoding = encoding
-        }
-
         named<Test>("test") {
             maxHeapSize = "1g"
             useJUnitPlatform()
@@ -45,6 +37,10 @@ subprojects {
 
         named("build") {
             dependsOn("publishToMavenLocal")
+        }
+
+        withType<JavaCompile>().configureEach {
+            options.encoding = encoding
         }
 
         withType<Sign>().configureEach {
