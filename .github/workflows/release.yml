@@ -34,16 +34,17 @@ jobs:
         id: set-release-name
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
+          result-encoding: string
           script: |
-            const result = await github.repos.listReleases({
+            const list = await github.repos.listReleases({
               owner: "domaframework",
               repo: "sandbox",
             });
-            console.log(result)
-            return result
+            console.log(list)
+            return list.data[0].name
 
       - name: Get result
-        run: echo "${{steps.set-release-name.outputs.result.name}}"
+        run: echo "${{steps.set-release-name.outputs.result}}"
 
 #      - name: Assemble & Check
 #        run: ./gradlew assemble check
