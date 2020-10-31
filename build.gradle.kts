@@ -139,10 +139,10 @@ rootProject.apply {
         newVersionCommitMessage = "[Gradle Release Plugin] - [skip ci] new version commit: "
 
         val releaseVersion = project.properties["release.releaseVersion"]?.toString()
-        checkNotNull(releaseVersion)
-
-        git {
-            requireBranch = "release/$releaseVersion"
+        if (releaseVersion != null) {
+            git {
+                requireBranch = "release/$releaseVersion"
+            }
         }
     }
 
