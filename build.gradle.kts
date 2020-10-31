@@ -123,11 +123,12 @@ subprojects {
 rootProject.apply {
     tasks {
         named("afterReleaseBuild") {
-            dependsOn(":sandbox-core:publish", "closeAndReleaseRepository")
+            dependsOn("publish", "closeAndReleaseRepository")
         }
 
         named("closeRepository") {
             onlyIf { isReleaseVersion }
+            mustRunAfter("publish")
         }
 
         named("releaseRepository") {
