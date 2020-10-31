@@ -3,9 +3,9 @@ name: Build
 on:
   push:
     branches:
-      - master
+      - main
     pull_request:
-      - master
+      - main
 
 jobs:
   build:
