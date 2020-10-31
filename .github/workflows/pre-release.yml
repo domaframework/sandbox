@@ -48,6 +48,7 @@ jobs:
           java -version
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b release/${{steps.release-version.outputs.result}}
           ./gradlew release -Prelease.releaseVersion=${{steps.release-version.outputs.result}}
 
       - name: Upload reports
