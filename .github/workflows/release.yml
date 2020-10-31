@@ -31,7 +31,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - uses: actions/github-script@v3
-        id: set-release-name
+        id: release-version
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           result-encoding: string
@@ -43,11 +43,20 @@ jobs:
             console.log(list)
             return list.data[0].name
 
-      - name: Get result
-        run: echo "${{steps.set-release-name.outputs.result}}"
+      - name: Release ${{steps.release-version.outputs.result}}
+        run: |
+          java -version
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          ./gradlew release -Prelease.releaseVersion=${{steps.release-version.outputs.result}}
 
-#      - name: Assemble & Check
-#        run: ./gradlew assemble check
+      - name: Publish
+        run: ./gradlew publish closeAndReleaseRepository
+        env:
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
+          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.OSSRH_USERNAME }}
+          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.OSSRH_PASSWORD }}
 
       - name: Upload reports
         if: failure()
