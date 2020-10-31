@@ -126,6 +126,10 @@ subprojects {
 
 rootProject.apply {
     tasks {
+        named("afterReleaseBuild") {
+            dependsOn("publish", "closeAndReleaseRepository")
+        }
+
         named("closeRepository") {
             onlyIf { isReleaseVersion }
         }
