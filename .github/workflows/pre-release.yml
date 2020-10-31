@@ -2,10 +2,14 @@ name: Pre Release
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version'
+        required: true
 
 jobs:
-  build:
-    name: Release
+  pre-release:
+    name: Pre Release
     runs-on: ubuntu-latest
  
     steps:
@@ -32,25 +36,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - uses: actions/github-script@v3
-        id: release-version
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          result-encoding: string
-          script: |
-            const list = await github.repos.listReleases({
-              owner: "domaframework",
-              repo: "sandbox",
-            });
-            console.log(list)
-            return list.data[0].name
-
-      - name: Release ${{steps.release-version.outputs.result}}
+      - name: Pre Release ${{ github.event.inputs.version }}
         run: |
           java -version
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          ./gradlew release -Prelease.releaseVersion=${{steps.release-version.outputs.result}}
+          ./gradlew release -Prelease.releaseVersion=${{ github.event.inputs.version }}
 
       - name: Upload reports
         if: failure()
