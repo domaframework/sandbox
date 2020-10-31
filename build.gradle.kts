@@ -136,7 +136,15 @@ rootProject.apply {
     }
 
     configure<net.researchgate.release.ReleaseExtension> {
+        fun net.researchgate.release.ReleaseExtension.git(configureFn : net.researchgate.release.GitAdapter.GitConfig.() -> Unit) {
+            (propertyMissing("git") as net.researchgate.release.GitAdapter.GitConfig).configureFn()
+        }
+
         newVersionCommitMessage = "[Gradle Release Plugin] - [skip ci] new version commit: "
+
+        git {
+            requireBranch = "main"
+        }
     }
 
     configure<io.codearte.gradle.nexus.NexusStagingExtension> {
