@@ -1,4 +1,4 @@
-name: Pre Release
+name: Release
 
 on:
   workflow_dispatch:
@@ -8,8 +8,8 @@ on:
         required: false
 
 jobs:
-  pre-release:
-    name: Pre Release
+  release:
+    name: Release
     runs-on: ubuntu-latest
  
     steps:
@@ -58,7 +58,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Pre Release ${{ env.RELEASE_VERSION }}
+      - name: Release ${{ env.RELEASE_VERSION }}
         run: |
           java -version
           git config --global user.name "github-actions[bot]"
