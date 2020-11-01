@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Assign input version
         if: github.event.inputs.version != null
-        run: echo "RELEASE_VERSION=${{ github.event.inputs.version }}"" >> $GITHUB_ENV
+        run: echo "RELEASE_VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
 
       - uses: actions/github-script@v3
         if: github.event.inputs.version == null
@@ -33,7 +33,7 @@ jobs:
 
       - name: Assign candidate version
         if: success()
-        run: echo "RELEASE_VERSION=${{ steps.candidate-version.outputs.result }}"" >> $GITHUB_ENV
+        run: echo "RELEASE_VERSION=${{ steps.candidate-version.outputs.result }}" >> $GITHUB_ENV
 
       - name: Set up JDK 8
         uses: actions/setup-java@v1
