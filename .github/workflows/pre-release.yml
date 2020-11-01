@@ -32,7 +32,7 @@ jobs:
             return list.data[0].name
 
       - name: Assign candidate version
-        if: success()
+        if: github.event.inputs.version == null
         run: echo "RELEASE_VERSION=${{ steps.candidate-version.outputs.result }}" >> $GITHUB_ENV
 
       - name: Set up JDK 8
